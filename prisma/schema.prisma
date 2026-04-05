@@ -17,11 +17,12 @@ model User {
 }
 
 model Plan {
-  id            String         @id @default(uuid())
-  name          String
-  price         Float
-  interval      String
-  subscriptions Subscription[]
+  id              String         @id @default(uuid())
+  name            String
+  price           Float
+  interval        String
+  stripePriceId   String?
+  subscriptions   Subscription[]
 }
 
 model Subscription {

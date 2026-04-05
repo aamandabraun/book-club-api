@@ -5,16 +5,31 @@ dotenv.config();
 
 const app = express();
 
+const webhookRoutes = require('./routes/webhook.routes');
+app.use('/webhooks/stripe', webhookRoutes);
+
 app.use(express.json());
 
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
+const planRoutes = require('./routes/plan.routes');
+const subscriptionRoutes = require('./routes/subscription.routes');
 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
+app.use('/plans', planRoutes);
+app.use('/subscriptions', subscriptionRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Book Club API funcionando!' });
+});
+
+app.get('/success', (req, res) => {
+  res.json({ message: 'Pagamento realizado com sucesso!' });
+});
+
+app.get('/cancel', (req, res) => {
+  res.json({ message: 'Pagamento cancelado.' });
 });
 
 const PORT = process.env.PORT || 3000;
