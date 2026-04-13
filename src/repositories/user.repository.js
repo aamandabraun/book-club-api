@@ -8,4 +8,8 @@ async function createUser(data) {
   return prisma.user.create({ data });
 }
 
-module.exports = { findByEmail, createUser };
+async function findById(id) { 
+  return prisma.user.findUnique({ where: { id } });
+}
+
+module.exports = { findByEmail, createUser, findById };

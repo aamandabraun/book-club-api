@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/user.repository');
+const { sendWelcomeEmail } = require('./mail.service'); 
 
 async function register(name, email, password) {
   const userExists = await userRepository.findByEmail(email);
@@ -15,6 +16,8 @@ async function register(name, email, password) {
     email,
     password: hashedPassword,
   });
+
+  await sendWelcomeEmail(email, name); // 👈
 
   return { id: user.id, name: user.name, email: user.email };
 }

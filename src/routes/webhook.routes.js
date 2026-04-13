@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const stripe = require('../config/stripe');
 const subscriptionRepository = require('../repositories/subscription.repository');
+const userRepository = require('../repositories/user.repository');
+const { sendSubscriptionConfirmationEmail } = require('../services/mail.service');
 
 router.post('/', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -26,6 +28,16 @@ router.post('/', express.raw({ type: 'application/json' }), async (req, res) => 
       await subscriptionRepository.updateSubscription(userId, {
         status: 'active'
       });
+
+      console.log('Buscando usuário:', userId);
+      const user = await userRepository.findById(userId);
+      console.log('Usuário encontrado:', user);
+
+      if (user) {
+        console.log('Enviando e-mail para:', user.email);
+        await sendSubscriptionConfirmationEmail(user.email, user.name);
+        console.log('E-mail enviado!');
+      }
     }
   }
 
