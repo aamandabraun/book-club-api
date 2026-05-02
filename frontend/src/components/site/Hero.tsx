@@ -38,11 +38,11 @@ const Hero = () => {
               as malas.
             </p>
 
-            <div className="absolute right-0 bottom-0 flex flex-row gap-4">
-              <Button variant="seal" size="xl" asChild>
+            <div className="mt-6 md:mt-0 flex flex-wrap gap-3">
+              <Button variant="seal" size="xl" asChild className="w-full md:w-auto">
                 <a href="#assinatura">Carimbar passaporte</a>
               </Button>
-              <Button variant="passport" size="xl" asChild>
+              <Button variant="passport" size="xl" asChild className="w-full md:w-auto">
                 <a href="#como-funciona">Ver como funciona</a>
               </Button>
             </div>

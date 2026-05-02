@@ -1,5 +1,9 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { plans, subscriptions } from "@/services/api";
 
 const perks = [
   "1 livro principal selecionado pela curadoria",
@@ -12,6 +16,33 @@ const perks = [
 ];
 
 const Pricing = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubscribe() {
+    setError("");
+    if (!isAuthenticated) {
+      navigate("/cadastro");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const availablePlans = await plans.list();
+      if (!availablePlans || availablePlans.length === 0) {
+        setError("Nenhum plano disponível no momento.");
+        return;
+      }
+      const { checkoutUrl } = await subscriptions.create(availablePlans[0].id);
+      window.location.href = checkoutUrl;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao iniciar assinatura.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <section id="assinatura" className="relative overflow-hidden bg-gradient-ink py-24 text-paper md:py-32">
       <div className="absolute inset-0 opacity-10">
@@ -76,8 +107,17 @@ const Pricing = () => {
             <div className="relative border-t-2 border-dashed border-ink/20 bg-paper-deep px-8 py-6">
               <div className="absolute -left-3 -top-3 h-6 w-6 rounded-full bg-background" />
               <div className="absolute -right-3 -top-3 h-6 w-6 rounded-full bg-background" />
-              <Button variant="passport" size="xl" className="w-full">
-                Carimbar meu passaporte
+              {error && (
+                <p className="mb-3 text-center text-sm text-red-500">{error}</p>
+              )}
+              <Button
+                variant="passport"
+                size="xl"
+                className="w-full"
+                onClick={handleSubscribe}
+                disabled={isLoading}
+              >
+                {isLoading ? "Aguarde..." : "Carimbar meu passaporte"}
               </Button>
               <p className="mt-3 text-center font-stamp text-[10px] uppercase tracking-widest text-muted-foreground">
                 Próxima caixa enviada em até 7 dias

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Compass } from "lucide-react";
 
+
 const Header = () => {
   return (
     <header className="absolute top-0 left-0 right-0 z-30">
@@ -32,5 +33,6 @@ const Header = () => {
     </header>
   );
 };
+
 
 export default Header;
