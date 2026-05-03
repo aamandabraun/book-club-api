@@ -1,12 +1,12 @@
-import stampJapan from "@/assets/stamp-japan.png";
-import stampColombia from "@/assets/stamp-colombia.png";
-import stampNigeria from "@/assets/stamp-nigeria.png";
-import stampIceland from "@/assets/stamp-iceland.png";
+import stampJapan from "@/assets/stamp-japan.jpg";
+import stampColombia from "@/assets/stamp-colombia.jpg";
+import stampNigeria from "@/assets/stamp-nigeria.jpg";
+import stampIceland from "@/assets/stamp-iceland.jpg";
 
 const destinations = [
   {
     country: "Japão",
-    month: "Jan · 2025",
+    month: "JUN · 2026",
     book: "Kafka à Beira-Mar",
     author: "Haruki Murakami",
     treat: "Chá matcha & papel washi",
@@ -15,7 +15,7 @@ const destinations = [
   },
   {
     country: "Colômbia",
-    month: "Fev · 2025",
+    month: "MAIO · 2026",
     book: "Cem Anos de Solidão",
     author: "Gabriel García Márquez",
     treat: "Café de origem & rede de bolso",
@@ -24,7 +24,7 @@ const destinations = [
   },
   {
     country: "Nigéria",
-    month: "Mar · 2025",
+    month: "ABR · 2026",
     book: "Americanah",
     author: "Chimamanda Ngozi Adichie",
     treat: "Tecido ankara & temperos suya",
@@ -33,7 +33,7 @@ const destinations = [
   },
   {
     country: "Islândia",
-    month: "Abr · 2025",
+    month: "MAR · 2026",
     book: "Independência",
     author: "Halldór Laxness",
     treat: "Sal de lava & vela aurora",

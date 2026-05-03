@@ -23,10 +23,12 @@ const Pricing = () => {
 
   async function handleSubscribe() {
     setError("");
+
     if (!isAuthenticated) {
       navigate("/cadastro");
       return;
     }
+
     setIsLoading(true);
     try {
       const availablePlans = await plans.list();
@@ -37,7 +39,13 @@ const Pricing = () => {
       const { checkoutUrl } = await subscriptions.create(availablePlans[0].id);
       window.location.href = checkoutUrl;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao iniciar assinatura.");
+      const message = err instanceof Error ? err.message : "Erro ao iniciar assinatura.";
+      // Se já tem assinatura, manda para o dashboard
+      if (message.toLowerCase().includes("assinatura")) {
+        navigate("/dashboard");
+        return;
+      }
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +111,7 @@ const Pricing = () => {
               </ul>
             </div>
 
-            {/* CTA + perfuração */}
+            {/* CTA */}
             <div className="relative border-t-2 border-dashed border-ink/20 bg-paper-deep px-8 py-6">
               <div className="absolute -left-3 -top-3 h-6 w-6 rounded-full bg-background" />
               <div className="absolute -right-3 -top-3 h-6 w-6 rounded-full bg-background" />

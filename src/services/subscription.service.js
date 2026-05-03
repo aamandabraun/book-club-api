@@ -33,8 +33,8 @@ async function createSubscription(userId, planId) {
     metadata: {
       userId: userId
     },
-    success_url: 'http://localhost:3000/success',
-    cancel_url: 'http://localhost:3000/cancel'
+    success_url: 'http://localhost:8080/assinatura/sucesso',
+    cancel_url: 'http://localhost:8080/',
   });
 
   const subscription = await subscriptionRepository.createSubscription({

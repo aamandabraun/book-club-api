@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { plans, subscriptions } from "@/services/api";
 
 export default function CadastroPage() {
   const { register } = useAuth();
@@ -17,11 +18,19 @@ export default function CadastroPage() {
     if (password.length < 6) { setError("A senha deve ter pelo menos 6 caracteres"); return; }
     setIsLoading(true);
     try {
+      // 1. Cria a conta
       await register({ name, email, password });
-      navigate("/dashboard");
+
+      // 2. Busca o plano e redireciona para o Stripe
+      const availablePlans = await plans.list();
+      if (!availablePlans || availablePlans.length === 0) {
+        navigate("/dashboard");
+        return;
+      }
+      const { checkoutUrl } = await subscriptions.create(availablePlans[0].id);
+      window.location.href = checkoutUrl;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro ao criar conta");
-    } finally {
       setIsLoading(false);
     }
   }
@@ -84,7 +93,7 @@ export default function CadastroPage() {
                 {isLoading ? (
                   <span className="auth-btn-loading">
                     <span className="auth-spinner" />
-                    Criando conta...
+                    {isLoading ? "Preparando embarque..." : ""}
                   </span>
                 ) : "CARIMBAR MEU PASSAPORTE"}
               </button>
@@ -151,10 +160,7 @@ export default function CadastroPage() {
           text-decoration: none;
         }
 
-        .auth-logo-icon {
-          font-size: 1.25rem;
-          color: #c9973a;
-        }
+        .auth-logo-icon { font-size: 1.25rem; color: #c9973a; }
 
         .auth-logo-text {
           font-family: 'Playfair Display', serif;
@@ -201,9 +207,7 @@ export default function CadastroPage() {
           margin: 0 2rem;
         }
 
-        .auth-card-body {
-          padding: 1.5rem 2rem;
-        }
+        .auth-card-body { padding: 1.5rem 2rem; }
 
         .auth-tagline {
           font-family: 'Cormorant Garamond', serif;
@@ -247,14 +251,8 @@ export default function CadastroPage() {
           width: 100%;
         }
 
-        .auth-input::placeholder {
-          color: rgba(15,30,58,0.35);
-          font-style: italic;
-        }
-
-        .auth-input:focus {
-          border-bottom-color: #c9973a;
-        }
+        .auth-input::placeholder { color: rgba(15,30,58,0.35); font-style: italic; }
+        .auth-input:focus { border-bottom-color: #c9973a; }
 
         .auth-error {
           font-family: 'Cormorant Garamond', serif;
@@ -282,14 +280,8 @@ export default function CadastroPage() {
           transition: background-color 0.2s, opacity 0.2s;
         }
 
-        .auth-btn:hover:not(:disabled) {
-          background-color: #1a3260;
-        }
-
-        .auth-btn:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
+        .auth-btn:hover:not(:disabled) { background-color: #1a3260; }
+        .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .auth-btn-loading {
           display: flex;
@@ -308,9 +300,7 @@ export default function CadastroPage() {
           display: inline-block;
         }
 
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .auth-card-footer {
           padding: 1rem 2rem 1.5rem;
@@ -332,9 +322,7 @@ export default function CadastroPage() {
           text-underline-offset: 2px;
         }
 
-        .auth-toggle-link:hover {
-          color: #a07828;
-        }
+        .auth-toggle-link:hover { color: #a07828; }
 
         .auth-footer-note {
           font-family: 'Libre Baskerville', serif;

@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Compass } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <header className="absolute top-0 left-0 right-0 z-30">
       <div className="container flex items-center justify-between py-6">
@@ -26,13 +30,16 @@ const Header = () => {
             </a>
           ))}
         </nav>
-        <Button variant="seal" size="sm" asChild>
-          <a href="#assinatura">Embarcar</a>
+        <Button
+          variant="seal"
+          size="sm"
+          onClick={() => navigate(isAuthenticated ? "/dashboard" : "/login")}
+        >
+          {isAuthenticated ? "Login" : "Login"}
         </Button>
       </div>
     </header>
   );
 };
-
 
 export default Header;

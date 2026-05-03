@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/user.repository');
-const { sendWelcomeEmail } = require('./mail.service'); 
+const { sendWelcomeEmail } = require('./mail.service');
 
 async function register(name, email, password) {
   const userExists = await userRepository.findByEmail(email);
@@ -17,9 +17,22 @@ async function register(name, email, password) {
     password: hashedPassword,
   });
 
-  await sendWelcomeEmail(email, name); // 👈
+  try {
+    await sendWelcomeEmail(email, name);
+  } catch (err) {
+    console.warn('Email de boas-vindas não enviado:', err.message);
+  }
 
-  return { id: user.id, name: user.name, email: user.email };
+  const token = jwt.sign(
+    { userId: user.id },
+    process.env.JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+
+  return {
+    token,
+    user: { id: user.id, name: user.name, email: user.email },
+  };
 }
 
 async function login(email, password) {
@@ -39,7 +52,10 @@ async function login(email, password) {
     { expiresIn: '7d' }
   );
 
-  return { token };
+  return {
+    token,
+    user: { id: user.id, name: user.name, email: user.email },
+  };
 }
 
 module.exports = { register, login };
