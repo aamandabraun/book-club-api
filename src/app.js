@@ -7,7 +7,15 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:5173', 'https://caixa-do-mundo.vercel.app'],
+  origin: function(origin, callback) {
+    if (!origin || 
+        origin.includes('vercel.app') || 
+        origin.includes('localhost')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
