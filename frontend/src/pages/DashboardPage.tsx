@@ -10,7 +10,7 @@ import stampIceland from "@/assets/stamp-iceland.jpg";
 const receivedBooks = [
   {
     country: "Japão",
-    month: "JAN · 2025",
+    month: "JUN · 2026",
     book: "Kafka à Beira-Mar",
     author: "Haruki Murakami",
     treat: "Chá matcha & papel washi",
@@ -19,7 +19,7 @@ const receivedBooks = [
   },
   {
     country: "Colômbia",
-    month: "FEV · 2025",
+    month: "MAI · 2026",
     book: "Cem Anos de Solidão",
     author: "Gabriel García Márquez",
     treat: "Café de origem & rede de bolso",
@@ -28,7 +28,7 @@ const receivedBooks = [
   },
   {
     country: "Nigéria",
-    month: "MAR · 2025",
+    month: "ABR · 2026",
     book: "Americanah",
     author: "Chimamanda Ngozi Adichie",
     treat: "Tecido ankara & temperos suya",
@@ -37,7 +37,7 @@ const receivedBooks = [
   },
   {
     country: "Islândia",
-    month: "ABR · 2025",
+    month: "MAR · 2026",
     book: "Independência",
     author: "Halldór Laxness",
     treat: "Sal de lava & vela aurora",
@@ -184,7 +184,7 @@ export default function DashboardPage() {
                 <span className="dash-seal-name">FRANCE</span>
               </div>
               <div className="dash-surprise-text">
-                <p className="dash-surprise-month">MAI · 2025</p>
+                <p className="dash-surprise-month">JUL · 2026</p>
                 <p className="dash-surprise-title">Você embarcará na França em até 3 dias.</p>
                 <p className="dash-surprise-desc"><em>Prepare-se para mais uma viagem sem sair do sofá.</em></p>
                 <p className="dash-surprise-note">Frete grátis · Enviada em breve</p>
