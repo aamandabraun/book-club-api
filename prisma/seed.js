@@ -7,6 +7,7 @@ async function main() {
       name: 'Caixa do Mundo · Mensal',
       price: 29.90,
       stripePriceId: 'price_1TIqNmAcU8hevhqdmaVCfsTm'
+      interval: 'month'
     }
   });
   console.log('Plano criado:', plan);
