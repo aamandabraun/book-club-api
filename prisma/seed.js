@@ -16,3 +16,9 @@ async function main() {
 main()
   .catch(console.error)
   .finally(() => prisma.$disconnect());
+
+const existing = await prisma.plan.findFirst();
+if (existing) {
+  console.log('Plano já existe, pulando seed.');
+  return;
+}
