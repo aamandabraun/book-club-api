@@ -33,7 +33,7 @@ async function createSubscription(userId, planId) {
     metadata: {
       userId: userId
     },
-    success_url: `${process.env.FRONTEND_URL}/assinatura/sucesso`,
+    success_url: `${process.env.FRONTEND_URL}/DashboardPage.tsx`,
     cancel_url: `${process.env.FRONTEND_URL}/`,
   });
 
