@@ -6,8 +6,9 @@ import { plans, subscriptions } from "@/services/api";
 export default function CadastroPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const emailFromUrl = new URLSearchParams(window.location.search).get("email") ?? "";
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(emailFromUrl);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +31,12 @@ export default function CadastroPage() {
       const { checkoutUrl } = await subscriptions.create(availablePlans[0].id);
       window.location.href = checkoutUrl;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro ao criar conta");
+      const message = err instanceof Error ? err.message : "Erro ao criar conta";
+      if (message.toLowerCase().includes("já cadastrado") || message.toLowerCase().includes("already")) {
+        navigate(`/login?email=${encodeURIComponent(email)}`);
+        return;
+      }
+      setError(message);
       setIsLoading(false);
     }
   }
