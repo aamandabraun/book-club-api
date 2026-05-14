@@ -57,9 +57,6 @@ export default function DashboardPage() {
 
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [isLoadingSub, setIsLoadingSub] = useState(true);
-  const [isCanceling, setIsCanceling] = useState(false);
-  const [cancelError, setCancelError] = useState("");
-  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
     subscriptions
@@ -68,20 +65,6 @@ export default function DashboardPage() {
       .catch(() => setSubscription(null))
       .finally(() => setIsLoadingSub(false));
   }, []);
-
-  async function handleCancel() {
-    setIsCanceling(true);
-    setCancelError("");
-    try {
-      await subscriptions.cancel();
-      setSubscription(null);
-      setShowConfirm(false);
-    } catch (err) {
-      setCancelError(err instanceof Error ? err.message : "Erro ao cancelar assinatura");
-    } finally {
-      setIsCanceling(false);
-    }
-  }
 
   function handleLogout() {
     logout();
@@ -235,29 +218,6 @@ export default function DashboardPage() {
             ))}
           </div>
         </div>
-
-        {/* Cancel — bottom */}
-        {subscription?.status === "active" && (
-          <div className="dash-cancel-section">
-            <div className="dash-divider-light" />
-            {cancelError && <p className="dash-cancel-error">{cancelError}</p>}
-            {showConfirm ? (
-              <div className="dash-confirm-box">
-                <p className="dash-confirm-text">Tem certeza? Você perderá o acesso no fim do período atual.</p>
-                <div className="dash-confirm-actions">
-                  <button onClick={handleCancel} disabled={isCanceling} className="dash-confirm-btn">
-                    {isCanceling ? "Cancelando..." : "CONFIRMAR CANCELAMENTO"}
-                  </button>
-                  <button onClick={() => setShowConfirm(false)} className="dash-back-btn">Voltar</button>
-                </div>
-              </div>
-            ) : (
-              <button onClick={() => setShowConfirm(true)} className="dash-cancel-btn">
-                CANCELAR ASSINATURA
-              </button>
-            )}
-          </div>
-        )}
       </main>
 
       <style>{`
@@ -370,23 +330,6 @@ export default function DashboardPage() {
         .dash-books-grid .stamp-tilt-4 {
           transform: none !important;
         }
-
-        /* Cancel */
-        .dash-cancel-section { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; padding-top: 1rem; }
-        .dash-divider-light { width: 100%; height: 0; border-top: 1px solid rgba(240,230,200,0.1); }
-
-        .dash-cancel-btn { background: transparent; border: 1px solid rgba(139,32,32,0.4); color: rgba(220,180,170,0.7); font-family: 'Libre Baskerville', serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.9rem 2.5rem; cursor: pointer; width: 100%; max-width: 360px; transition: all 0.2s; }
-        .dash-cancel-btn:hover { border-color: rgba(139,32,32,0.7); color: rgba(220,150,140,0.9); }
-        .dash-cancel-error { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: #c07070; font-style: italic; margin: 0; }
-
-        .dash-confirm-box { width: 100%; max-width: 480px; background: rgba(240,230,200,0.06); border: 1px solid rgba(240,230,200,0.1); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; align-items: center; text-align: center; }
-        .dash-confirm-text { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: rgba(240,230,200,0.7); font-style: italic; margin: 0; }
-        .dash-confirm-actions { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; width: 100%; }
-        .dash-confirm-btn { background: rgba(139,32,32,0.8); color: #f0e6c8; border: none; padding: 0.9rem 2rem; font-family: 'Libre Baskerville', serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; width: 100%; transition: background 0.2s; }
-        .dash-confirm-btn:hover { background: rgba(110,20,20,0.9); }
-        .dash-confirm-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        .dash-back-btn { background: none; border: none; font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: rgba(240,230,200,0.4); cursor: pointer; padding: 0; font-style: italic; }
-        .dash-back-btn:hover { color: rgba(240,230,200,0.7); }
 
         @media (max-width: 600px) {
           .dash-main { padding: 2rem 1rem 4rem; }
