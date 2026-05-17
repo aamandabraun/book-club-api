@@ -1,4 +1,4 @@
-# 📦 Caixa do Mundo
+# 🌍 Caixa do Mundo
 
 > *Uma viagem por mês, sem sair do sofá.*
 
