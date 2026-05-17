@@ -5,6 +5,43 @@ const subscriptionRepository = require('../repositories/subscription.repository'
 const userRepository = require('../repositories/user.repository');
 const { sendSubscriptionConfirmationEmail } = require('../services/mail.service');
 
+/**
+ * @swagger
+ * /webhooks/stripe:
+ *   post:
+ *     summary: Recebe eventos do Stripe via webhook
+ *     tags: [Webhooks]
+ *     description: Endpoint para receber notificações do Stripe. Processa o evento `checkout.session.completed` para ativar assinaturas automaticamente.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 example: checkout.session.completed
+ *               data:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Evento recebido com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 received:
+ *                   type: boolean
+ *                   example: true
+ *       400:
+ *         description: Assinatura do webhook inválida
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.post('/', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
 
