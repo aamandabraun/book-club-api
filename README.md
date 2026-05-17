@@ -17,6 +17,7 @@ Plataforma de assinatura de caixas literárias temáticas com destinos internaci
 - ✅ Dashboard personalizado com informações do plano e próxima viagem
 - ✅ Validação de dados com Zod
 - ✅ Deploy em produção com CI/CD automático
+- ✅ Documentação da API via Swagger
 
 <br>
 
@@ -29,11 +30,12 @@ Plataforma de assinatura de caixas literárias temáticas com destinos internaci
 - **JWT** — autenticação e autorização
 - **Zod** — validação de schemas
 - **Stripe** — pagamentos e assinaturas recorrentes
-- **Nodemailer** — envio de e-mails transacionais
+- **Resend** — envio de e-mails transacionais
+- **Swagger** — documentação da API
 - **Docker** — containerização da aplicação
 
 ### Frontend
-- **React** + **TypeScript** — interface moderna e tipada
+- **Lovable** — apoio na geração e prototipação
 - **Vite** — bundler e ambiente de desenvolvimento
 - **Tailwind CSS** — estilização utilitária
 - **React Router** — navegação entre páginas
@@ -41,7 +43,6 @@ Plataforma de assinatura de caixas literárias temáticas com destinos internaci
 ### Infraestrutura
 - **Render** — deploy do backend com Docker
 - **Vercel** — deploy do frontend
-- **Resend** - envio dos e-mails
 - **UptimeRobot** — monitoramento de disponibilidade
 
 <br>
@@ -65,7 +66,7 @@ caixa-do-mundo/
 │   ├── repositories/       # Acesso ao banco de dados
 │   ├── middlewares/        # Middlewares (auth, validação)
 │   ├── routes/             # Definição de rotas
-│   └── config/             # Configurações (Stripe, mailer)
+│   └── config/             # Configurações (Stripe, mailer, swagger)
 ├── prisma/                 # Schema e migrations
 ├── Dockerfile
 └── docker-compose.yml
@@ -79,6 +80,7 @@ caixa-do-mundo/
 - Node.js 20+
 - Docker e Docker Compose
 - Conta no Stripe (modo teste)
+- Conta no Resend
 
 ### Passo a passo
 
@@ -127,10 +129,7 @@ STRIPE_SECRET_KEY=
 STRIPE_PRICE_ID=
 STRIPE_WEBHOOK_SECRET=
 
-SMTP_HOST=
-SMTP_PORT=
-SMTP_USER=
-SMTP_PASS=
+RESEND_API_KEY=
 SMTP_FROM=
 
 FRONTEND_URL=
@@ -157,11 +156,10 @@ FRONTEND_URL=
 
 A documentação completa dos endpoints está disponível via Swagger:
 
-🔗 **[Acesse a documentação](https://book-club-api-neou.onrender.com/api-docs)**
-
+🔗 **[Acesse](https://book-club-api-neou.onrender.com/api-docs)**
 
 <br>
 
 ## 🎬 Demonstração
 
-![Demo do projeto](./demo.gif)
+![Demo do projeto](./frontend/src/assets/demo.gif)
